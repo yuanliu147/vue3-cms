@@ -18,5 +18,5 @@ export default {
   },
   clearAll() {
     window.localStorage.removeItem(nameSpace)
-  }
+  },
 }

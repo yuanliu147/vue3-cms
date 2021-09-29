@@ -3,13 +3,10 @@ const TIMEOUT = 10000
 
 const env: string = process.env.NODE_ENV
 
-if(env === 'development') {
+if (env === 'development') {
   BASE_URL = '/api'
-} else if(env === 'production') {
+} else if (env === 'production') {
   BASE_URL = ''
 }
 
-export {
-  BASE_URL,
-  TIMEOUT
-}
+export { BASE_URL, TIMEOUT }
