@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import storage from '@/utils/storage'
+import store from '@/store'
+import { loadRoutes } from '@/utils/utils'
 const Login = () =>
   import(/* webpackChunkName: "login" */ '../views/login/login.vue')
 const Home = () =>
@@ -8,10 +10,6 @@ const Home = () =>
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/home',
-  },
-  {
-    path: '/home',
     name: 'home',
     component: Home,
   },
@@ -29,11 +27,14 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   if (to.fullPath !== '/login') {
-    const token = storage.getItem('token')
-    if (!token) {
+    const userInfo = storage.getItem('userInfo')
+    if (!userInfo) {
       return '/login'
     }
   }
 })
+if (router.currentRoute.value.fullPath !== '/login') {
+  loadRoutes(router, store.state.menus)
+}
 
 export default router

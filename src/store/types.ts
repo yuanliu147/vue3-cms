@@ -1,14 +1,32 @@
 export interface IRootState {
-  id: number | null
-  name: string | null
+  menus: IMenus[]
+}
+
+export interface IMenus {
+  _id: number
+  name: string
+  icon: string
+  path: string
+  type: number
+  createTime: string
+  updateTime: string
+  parentId: null | number
+  permission: null | string
+  children: IMenus[]
 }
 
 export interface ILoginState {
-  token: string
+  userInfo: IUserInfo
+}
+
+export interface IUserInfo {
+  token?: string
+  _id?: number
+  name?: string
 }
 
 interface IStateWidthModel {
-  loginModel: ILoginState
+  loginModule: ILoginState
 }
 
 export type IStore = IRootState & IStateWidthModel

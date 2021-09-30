@@ -1,7 +1,38 @@
 <template>
-  <div>主页</div>
+  <el-container class="home">
+    <el-aside class="menus">
+      <NavMenus />
+    </el-aside>
+    <el-container>
+      <el-header class="header">
+        <NavHeader />
+      </el-header>
+      <el-main class="content">
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import NavMenus from '@/components/nav-menus/nav-menus.vue'
+import NavHeader from '@/components/nav-header/nav-header.vue'
+</script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.home {
+  height: 100vh;
+  .menus {
+    background-color: #052646;
+    width: 160px;
+  }
+  .header {
+    border-bottom: 1px solid #666;
+    height: 60px;
+  }
+  .content {
+    height: 100%;
+    background-color: #eee;
+  }
+}
+</style>

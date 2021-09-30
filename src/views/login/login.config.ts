@@ -29,6 +29,6 @@ export const rules: FormRulesMap = {
 }
 
 export const userAccount = ref<IAccount>({
-  name: '',
-  password: '',
+  name: 'liuer',
+  password: '123456',
 })

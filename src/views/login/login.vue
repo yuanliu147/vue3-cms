@@ -23,22 +23,27 @@
 
 <script lang="ts" setup>
 import MyForm from '@/components/my-form/my-form.vue'
-import { login } from '@/service/login/login'
 import { ElForm } from 'element-plus'
 import { ref } from 'vue'
 import { formItems, userAccount, rules } from './login.config'
-import { showMessageByCode } from '@/utils/utils'
 import { useRouter } from 'vue-router'
+import { useStore } from '@/store'
 const router = useRouter()
+const store = useStore()
 const loading = ref(false)
 const handleLogin = (formRef: InstanceType<typeof ElForm> | undefined) => {
+  if (loading.value === true) {
+    return
+  }
   formRef?.validate(async (validate) => {
     if (validate) {
       loading.value = true
-      const res = await login(userAccount.value) // 登录模块貌似应该放到vuex中
+      const success = await store.dispatch(
+        'loginModule/login',
+        userAccount.value
+      )
       loading.value = false
-      showMessageByCode(res.code, res.msg)
-      router.push('/home')
+      success && router.replace('/')
     }
   })
 }

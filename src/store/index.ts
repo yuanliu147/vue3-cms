@@ -1,14 +1,17 @@
 import { createStore, Store, useStore as useOriginStore } from 'vuex'
 import storage from '@/utils/storage'
 import { IRootState, IStore } from './types'
-import loginModule from './loginModule'
+import loginModule from './modules/login'
 
 export default createStore<IRootState>({
   state: {
-    id: storage.getItem('id') ?? null,
-    name: storage.getItem('name') ?? null,
+    menus: storage.getItem('menus') ?? [],
   },
-  mutations: {},
+  mutations: {
+    setMenus(state, menus) {
+      state.menus = menus
+    },
+  },
   actions: {},
   modules: {
     loginModule,

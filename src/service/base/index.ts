@@ -1,3 +1,5 @@
+import store from '@/store'
+import { IStore } from '@/store/types'
 import { IObject } from '@/type'
 import axios, { AxiosRequestConfig } from 'axios'
 import { BASE_URL, TIMEOUT } from './config'
@@ -6,6 +8,10 @@ axios.defaults.baseURL = BASE_URL
 axios.defaults.timeout = TIMEOUT
 
 axios.interceptors.request.use((req) => {
+  const userInfo = (store.state as IStore).loginModule.userInfo
+  const tokenStr = userInfo.token
+  const token = `Bearer ${tokenStr}`
+  req.headers['Authorization'] = token
   return req
 })
 
@@ -17,7 +23,7 @@ function request<T = any>(config: AxiosRequestConfig): Promise<T> {
   return axios.request<any, T>(config)
 }
 
-export function get<T = any>(url: string, params: IObject): Promise<T> {
+export function get<T = any>(url: string, params?: IObject): Promise<T> {
   return request<T>({ url, params, method: 'GET' })
 }
 export function post<T = any>(url: string, data: IObject): Promise<T> {
