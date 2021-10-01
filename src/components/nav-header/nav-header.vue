@@ -11,7 +11,7 @@
         <i class="el-icon-bell" />
       </el-badge>
       <div class="user">
-        <HeaderUser></HeaderUser>
+        <HeaderUser />
       </div>
     </div>
   </div>
@@ -31,7 +31,11 @@ const breadList = ref<any>([])
 watch(
   currPath,
   (newPath: string) => {
-    breadList.value = useBread(menus, newPath)
+    if (newPath === '/welcome') {
+      breadList.value = [{ name: '欢迎使用' }]
+    } else {
+      breadList.value = useBread(menus, newPath)
+    }
   },
   {
     immediate: true,

@@ -17,12 +17,24 @@ export interface IMenus {
 
 export interface ILoginState {
   userInfo: IUserInfo
+  token: string
 }
 
 export interface IUserInfo {
-  token?: string
-  _id?: number
-  name?: string
+  _id: number
+  name: string
+  email: string
+  cellPhone: string
+  sex: number
+  state: number
+  avatar: string
+  roleId: number
+  deptId: number
+}
+
+export interface ILoginData {
+  userInfo: IUserInfo
+  token: string
 }
 
 interface IStateWidthModel {

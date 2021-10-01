@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import MyForm from '@/components/my-form/my-form.vue'
+import MyForm from '@/base-components/my-form/my-form.vue'
 import { ElForm } from 'element-plus'
 import { ref } from 'vue'
 import { formItems, userAccount, rules } from './login.config'

@@ -1,33 +1,80 @@
 <template>
   <div class="header-user">
-    <el-avatar class="avatar" :size="25" icon="el-icon-user-solid"> </el-avatar>
+    <el-avatar class="avatar" :size="25" :src="userInfo.avatar"> </el-avatar>
     <el-dropdown>
       <span class="el-dropdown-link">
-        {{ name }}<i class="el-icon-arrow-down el-icon--right"></i>
+        {{ userInfo.name }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>用户信息</el-dropdown-item>
+          <el-dropdown-item @click="handleSelf">用户信息</el-dropdown-item>
           <el-dropdown-item divided @click="handleLogout"
             >退出登录</el-dropdown-item
           >
         </el-dropdown-menu>
       </template>
     </el-dropdown>
+    <PageDialog
+      :dialog-data="userInfo"
+      :dialog-items="dialogItems"
+      :rules="rules"
+      page="user"
+      :id="userInfo._id"
+      :otherConfig="otherConfig"
+      ref="dialogRef"
+    >
+      <el-upload
+        :action="uploadUrl"
+        name="avatar"
+        :show-file-list="false"
+        :on-success="uploadSuccess"
+        class="upload"
+        accept="image/*"
+        :headers="headers"
+      >
+        <el-avatar class="avatar-img" :size="80" :src="userInfo.avatar" />
+      </el-upload>
+    </PageDialog>
   </div>
 </template>
 
 <script lang="ts" setup>
 import router from '@/router'
+import { BASE_URL } from '@/service/base/config'
 import { useStore } from '@/store'
 import storage from '@/utils/storage'
-import { computed } from 'vue'
+import { ElMessage } from 'element-plus'
+import { computed, ref } from 'vue'
+import PageDialog from '../page-dialog/page-dialog.vue'
+import { dialogItems, rules } from './dialog.config'
 const store = useStore()
-const name = computed(() => store.state.loginModule.userInfo.name)
+const dialogRef = ref<InstanceType<typeof PageDialog>>()
+
+const userInfo = computed(() => store.state.loginModule.userInfo)
+const token = computed(() => store.state.loginModule.token)
+const headers = computed(() => ({ Authorization: `Bearer ${token.value}` }))
+const uploadUrl = computed(() => `${BASE_URL}/upload/avatar`)
+
+const otherConfig = {
+  labelWidth: '70px',
+  size: 'mini',
+  hideRequiredAsterisk: true,
+}
+
 const handleLogout = () => {
   store.commit('loginModule/setUserInfo', {})
   storage.clearItem('userInfo')
   router.replace('/login')
+}
+const handleSelf = () => {
+  // #父组件怎么获取子组件并且有expose里面的提示呀
+  if (dialogRef.value) {
+    ;(dialogRef.value as any).dialogVisible = true
+  }
+}
+const uploadSuccess = async () => {
+  await store.dispatch('loginModule/getUserInfo')
+  ElMessage.success('更换成功~')
 }
 </script>
 
@@ -37,6 +84,17 @@ const handleLogout = () => {
   align-items: center;
   .avatar {
     margin-right: 5px;
+  }
+
+  .upload {
+    text-align: center;
+    .avatar-img {
+      margin: 10px auto;
+      display: block;
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
 </style>

@@ -8,8 +8,7 @@ axios.defaults.baseURL = BASE_URL
 axios.defaults.timeout = TIMEOUT
 
 axios.interceptors.request.use((req) => {
-  const userInfo = (store.state as IStore).loginModule.userInfo
-  const tokenStr = userInfo.token
+  const tokenStr = (store.state as IStore).loginModule.token
   const token = `Bearer ${tokenStr}`
   req.headers['Authorization'] = token
   return req

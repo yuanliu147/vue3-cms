@@ -5,10 +5,13 @@ import {
   ElButton,
   ElCard,
   ElContainer,
+  ElDialog,
   ElDropdown,
   ElForm,
   ElInput,
   ElMenu,
+  ElSelect,
+  ElUpload,
 } from 'element-plus'
 import { App } from 'vue'
 
@@ -23,6 +26,9 @@ const comps = [
   ElBadge,
   ElDropdown,
   ElAvatar,
+  ElDialog,
+  ElSelect,
+  ElUpload,
 ]
 
 export default function registerElem(app: App): void {

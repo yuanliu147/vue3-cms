@@ -1,4 +1,4 @@
-import { formItemType } from '@/components/types'
+import { formItemType } from '@/base-components/types'
 import { IAccount } from '@/views/types'
 import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 import { ref } from 'vue-demi'
