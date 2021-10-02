@@ -11,3 +11,19 @@ interface ISelectOption {
   label: string
   value: any
 }
+
+export interface ILayout {
+  xs: number
+  sm: number
+  md: number
+  lg: number
+  xl: number
+}
+
+export interface ITableColumn {
+  prop: string
+  label: string
+  type?: 'image' | 'enum' | 'time'
+  map?: any
+  minWidth?: string
+}

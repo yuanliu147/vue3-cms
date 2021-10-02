@@ -1,7 +1,7 @@
 <template>
   <div class="nav-header">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' } as any">首页</el-breadcrumb-item>
       <el-breadcrumb-item v-for="item of breadList" :key="item.name">
         {{ item.name }}
       </el-breadcrumb-item>
@@ -19,6 +19,7 @@
 
 <script lang="ts" setup>
 import HeaderUser from './header-user.vue'
+import { ElBreadcrumb, ElBreadcrumbItem, ElBadge } from 'element-plus'
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from '@/store'

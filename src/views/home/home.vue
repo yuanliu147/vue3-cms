@@ -8,7 +8,11 @@
         <NavHeader />
       </el-header>
       <el-main class="content">
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <transition name="el-fade-in-linear" mode="out-in">
+            <component :is="Component"></component>
+          </transition>
+        </router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -17,6 +21,7 @@
 <script lang="ts" setup>
 import NavMenus from '@/components/nav-menus/nav-menus.vue'
 import NavHeader from '@/components/nav-header/nav-header.vue'
+import { ElContainer, ElAside, ElHeader, ElMain } from 'element-plus'
 </script>
 
 <style lang="scss" scoped>

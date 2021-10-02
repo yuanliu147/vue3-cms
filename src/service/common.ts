@@ -2,7 +2,7 @@ import { get, patch } from './base'
 
 export type TPage = 'menu' | 'user' | 'role' | 'dept'
 
-interface IPaging {
+export interface IPaging {
   pageSize: number
   pageNum: number
 }

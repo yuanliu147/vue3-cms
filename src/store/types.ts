@@ -1,5 +1,43 @@
 export interface IRootState {
   menus: IMenus[]
+  roles: IRoleResData
+  depts: IDeptResData
+  users: IUserResData
+}
+
+export interface IDept {
+  _id: number
+  name: string
+  leader: string
+  createTime: string
+  updateTime: string
+}
+
+export interface IUser extends IUserInfo {
+  createTime: string
+  updateTime: string
+}
+
+export interface IUserResData {
+  list: IUser[]
+  total: number
+}
+
+export interface IDeptResData {
+  list: IDept[]
+  total: number
+}
+
+export interface IRole {
+  _id: number
+  name: string
+  desc: string
+  createTime: string
+  updateTime: string
+}
+export interface IRoleResData {
+  list: IRole[]
+  total: number
 }
 
 export interface IMenus {
@@ -15,11 +53,6 @@ export interface IMenus {
   children: IMenus[]
 }
 
-export interface ILoginState {
-  userInfo: IUserInfo
-  token: string
-}
-
 export interface IUserInfo {
   _id: number
   name: string
@@ -32,6 +65,10 @@ export interface IUserInfo {
   deptId: number
 }
 
+export interface ILoginState {
+  userInfo: IUserInfo
+  token: string
+}
 export interface ILoginData {
   userInfo: IUserInfo
   token: string

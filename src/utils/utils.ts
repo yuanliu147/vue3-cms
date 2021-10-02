@@ -26,3 +26,7 @@ export function loadRoutes(router: Router, menus: IMenus[]) {
     }
   }
 }
+
+export function firstToUpper(str: string): string {
+  return str[0].toUpperCase() + str.slice(1)
+}

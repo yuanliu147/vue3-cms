@@ -20,7 +20,9 @@
       :rules="rules"
       page="user"
       :id="userInfo._id"
+      :load-data="loadData"
       :otherConfig="otherConfig"
+      v-if="userInfo._id"
       ref="dialogRef"
     >
       <el-upload
@@ -40,6 +42,13 @@
 
 <script lang="ts" setup>
 import router from '@/router'
+import {
+  ElDropdown,
+  ElAvatar,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElUpload,
+} from 'element-plus'
 import { BASE_URL } from '@/service/base/config'
 import { useStore } from '@/store'
 import storage from '@/utils/storage'
@@ -52,7 +61,9 @@ const dialogRef = ref<InstanceType<typeof PageDialog>>()
 
 const userInfo = computed(() => store.state.loginModule.userInfo)
 const token = computed(() => store.state.loginModule.token)
-const headers = computed(() => ({ Authorization: `Bearer ${token.value}` }))
+const headers = computed(
+  () => ({ Authorization: `Bearer ${token.value}` } as any)
+)
 const uploadUrl = computed(() => `${BASE_URL}/upload/avatar`)
 
 const otherConfig = {
@@ -73,8 +84,18 @@ const handleSelf = () => {
   }
 }
 const uploadSuccess = async () => {
-  await store.dispatch('loginModule/getUserInfo')
-  ElMessage.success('更换成功~')
+  const success = await store.dispatch(
+    'loginModule/getUserInfo',
+    userInfo.value._id
+  )
+  success && ElMessage.success('更换成功~')
+}
+const loadData = async () => {
+  const success = await store.dispatch(
+    'loginModule/getUserInfo',
+    userInfo.value._id
+  )
+  success && ElMessage.success('更新成功~')
 }
 </script>
 

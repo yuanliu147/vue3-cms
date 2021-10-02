@@ -1,19 +1,11 @@
 import storage from '@/utils/storage'
-import router from '@/router'
 import { Module } from 'vuex'
-import {
-  ILoginState,
-  IMenus,
-  IRootState,
-  ILoginData,
-  IUserInfo,
-} from '../types'
+import { ILoginState, IRootState, ILoginData, IUserInfo } from '../types'
 import { login } from '@/service/login'
 import { IResData } from '@/type'
-import { loadRoutes, showMessageByRes } from '@/utils/utils'
 import { getInfoById } from '@/service/user'
 import { ElMessage } from 'element-plus'
-import { getPageList } from '@/service'
+import { showMessageByRes } from '@/utils/utils'
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {
@@ -31,7 +23,7 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
   },
   actions: {
-    async login({ commit }, account) {
+    async login({ commit, dispatch }, account) {
       const loginRes = await login<IResData<ILoginData>>(account)
       showMessageByRes(loginRes)
       if (loginRes.data) {
@@ -43,16 +35,16 @@ const loginModule: Module<ILoginState, IRootState> = {
       }
 
       // 获取菜单列表
-      const menusRes = await getPageList<IResData<IMenus[]>>('menu')
-      showMessageByRes(menusRes)
-      const menus = menusRes.data
-      commit('setMenus', menus, { root: true })
-      storage.setItem('menus', menus)
-      menus && loadRoutes(router, menus)
+      await dispatch('getMenus', null, { root: true })
+      // 获取角色列表
+      await dispatch('getRoles', null, { root: true })
+      // 获取部门列表
+      await dispatch('getDepts', null, { root: true })
+
       return loginRes.code === 200
     },
-    async getUserInfo({ state, commit }) {
-      const _id = state.userInfo._id
+
+    async getUserInfo({ commit }, _id: number) {
       const infoRes = await getInfoById<IResData<IUserInfo>>(_id)
       if (infoRes.code === 200) {
         const info = infoRes.data

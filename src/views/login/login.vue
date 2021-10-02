@@ -4,6 +4,7 @@
       :form-items="formItems"
       v-model:form-data="userAccount"
       :rules="rules"
+      :layout="{ xs: 24, sm: 24, md: 24, lg: 24, xl: 24 }"
     >
       <template #header>
         <h2 class="title">vue3-cms</h2>
@@ -23,7 +24,7 @@
 
 <script lang="ts" setup>
 import MyForm from '@/base-components/my-form/my-form.vue'
-import { ElForm } from 'element-plus'
+import { ElForm, ElButton, ElCard } from 'element-plus'
 import { ref } from 'vue'
 import { formItems, userAccount, rules } from './login.config'
 import { useRouter } from 'vue-router'

@@ -1,7 +1,27 @@
 import { formItemType } from '@/base-components/types'
+import store from '@/store'
 import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
+import { computed, reactive } from 'vue'
+const rolesOption = computed(() => {
+  return store.state.roles?.list?.map((role) => {
+    return {
+      label: role.name,
+      value: role._id,
+    }
+  })
+})
 
-const dialogItems: formItemType[] = [
+const deptsOption = computed(() => {
+  return store.state.depts?.list?.map((dept) => {
+    return {
+      label: dept.name,
+      value: dept._id,
+    }
+  })
+})
+
+const dialogItems = reactive<formItemType[]>([
+  // 数据不能写死
   { type: 'text', field: 'name', label: '用户名' },
   { type: 'text', field: 'email', label: '邮箱' },
   { type: 'text', field: 'cellPhone', label: '手机号' },
@@ -28,28 +48,15 @@ const dialogItems: formItemType[] = [
     type: 'select',
     field: 'roleId',
     label: '角色',
-    selectOptions: [
-      { label: '超级管理员', value: 1001 },
-      { label: '部门经理', value: 1002 },
-      { label: '普通用户', value: 1003 },
-    ],
+    selectOptions: rolesOption.value,
   },
   {
     type: 'select',
     field: 'deptId',
     label: '部门',
-    selectOptions: [
-      { label: '人事部', value: 12301 },
-      { label: '客服部', value: 12302 },
-      { label: '运营部', value: 12303 },
-      { label: '研发部', value: 12304 },
-      { label: '保卫部', value: 12306 },
-      { label: '秘书部', value: 12307 },
-      { label: '总裁部', value: 123010 },
-      { label: '测试部', value: 123012 },
-    ],
+    selectOptions: deptsOption.value,
   },
-]
+])
 
 const rules: FormRulesMap = {
   name: [
