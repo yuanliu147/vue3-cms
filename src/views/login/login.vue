@@ -10,11 +10,7 @@
         <h2 class="title">vue3-cms</h2>
       </template>
       <template #footer="{ formRef }">
-        <el-button
-          class="submit"
-          type="primary"
-          @click="handleLogin(formRef)"
-          :loading="loading"
+        <el-button class="submit" type="primary" @click="handleLogin(formRef)" :loading="loading"
           >登录</el-button
         >
       </template>
@@ -39,10 +35,7 @@ const handleLogin = (formRef: InstanceType<typeof ElForm> | undefined) => {
   formRef?.validate(async (validate) => {
     if (validate) {
       loading.value = true
-      const success = await store.dispatch(
-        'loginModule/login',
-        userAccount.value
-      )
+      const success = await store.dispatch('loginModule/login', userAccount.value)
       loading.value = false
       success && router.replace('/')
     }

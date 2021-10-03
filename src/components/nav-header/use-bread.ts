@@ -1,10 +1,7 @@
 import { IMenus } from '@/store/types'
 import { ComputedRef } from 'vue'
 
-export default function useBread(
-  menus: ComputedRef<IMenus[]>,
-  newPath: string
-): any[] {
+export default function useBread(menus: ComputedRef<IMenus[]>, newPath: string): any[] {
   const breadList: any[] = []
   for (const menu of menus.value) {
     if (menu.type === 1) {

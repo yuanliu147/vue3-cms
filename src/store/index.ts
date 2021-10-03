@@ -1,13 +1,6 @@
 import { createStore, Store, useStore as useOriginStore } from 'vuex'
 import storage from '@/utils/storage'
-import type {
-  IDeptResData,
-  IMenus,
-  IRoleResData,
-  IRootState,
-  IStore,
-  IUserResData,
-} from './types'
+import type { IDeptResData, IMenus, IRoleResData, IRootState, IStore, IUserResData } from './types'
 import { getPageList, IPaging } from '@/service/common'
 import loginModule from './modules/login'
 import { IResData } from '@/type'

@@ -1,10 +1,6 @@
 <template>
   <div>
-    <PageSearch
-      :search-data="searchData"
-      :search-items="searchItems"
-      :other-config="otherConfig"
-    />
+    <PageSearch :search-data="searchData" :search-items="searchItems" :other-config="otherConfig" />
     <PageContent :table-column="tableColumns" page="user" />
   </div>
 </template>

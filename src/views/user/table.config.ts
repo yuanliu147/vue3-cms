@@ -2,7 +2,7 @@ import { ITableColumn } from '@/base-components/types'
 import store from '@/store'
 
 const mapState = (id: number) => {
-  return ['在职', '离职', '试用期'][id]
+  return ['在职', '离职', '试用'][id]
 }
 const mapRole = (id: number) => {
   const roles = store.state?.roles?.list ?? []
@@ -15,10 +15,28 @@ const mapDept = (id: number) => {
   return target?.name ?? null
 }
 
+const setStyle = (code: number) => {
+  if (code === 0) {
+    return ''
+  } else if (code === 1) {
+    return 'danger'
+  } else {
+    return 'info'
+  }
+}
+
 export const tableColumns: ITableColumn[] = [
-  { label: '用户名', prop: 'name', minWidth: '60' },
+  { label: 'id', prop: '_id', minWidth: '50' },
+  { label: '用户名', prop: 'name', minWidth: '70' },
   { label: '头像', prop: 'avatar', type: 'image', minWidth: '80' },
-  { label: '状态', prop: 'state', type: 'enum', map: mapState, minWidth: '60' },
+  {
+    label: '状态',
+    prop: 'state',
+    type: 'enum',
+    map: mapState,
+    minWidth: '70',
+    style: setStyle,
+  },
   { label: '邮箱', prop: 'email', minWidth: '140' },
   { label: '手机号', prop: 'cellPhone', minWidth: '120' },
   {

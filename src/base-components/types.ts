@@ -1,3 +1,5 @@
+import { Ref } from 'vue-demi';
+
 type Type = 'text' | 'password' | 'select'
 export interface formItemType {
   type: Type // 标签类型
@@ -26,4 +28,5 @@ export interface ITableColumn {
   type?: 'image' | 'enum' | 'time'
   map?: any
   minWidth?: string
+  style?: any
 }

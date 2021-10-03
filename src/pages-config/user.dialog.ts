@@ -2,17 +2,17 @@ import { formItemType } from '@/base-components/types'
 import store from '@/store'
 import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 import { computed, reactive } from 'vue'
-const rolesOption = computed(() => {
-  return store.state.roles?.list?.map((role) => {
+
+const rolesOptions = computed(() => {
+  return store.state.roles.list.map((role) => {
     return {
       label: role.name,
       value: role._id,
     }
   })
 })
-
-const deptsOption = computed(() => {
-  return store.state.depts?.list?.map((dept) => {
+const deptOptions = computed(() => {
+  return store.state.depts.list.map((dept) => {
     return {
       label: dept.name,
       value: dept._id,
@@ -20,15 +20,21 @@ const deptsOption = computed(() => {
   })
 })
 
-const dialogItems = reactive<formItemType[]>([
+const userDialogItems = reactive<formItemType[]>([
   // 数据不能写死
-  { type: 'text', field: 'name', label: '用户名' },
-  { type: 'text', field: 'email', label: '邮箱' },
-  { type: 'text', field: 'cellPhone', label: '手机号' },
+  { type: 'text', field: 'name', label: '用户名', placeholder: '请输入用户名' },
+  { type: 'text', field: 'email', label: '邮箱', placeholder: '请输入邮箱' },
+  {
+    type: 'text',
+    field: 'cellPhone',
+    label: '手机号',
+    placeholder: '请输入手机号',
+  },
   {
     type: 'select',
     field: 'sex',
     label: '性别',
+    placeholder: '请选择性别',
     selectOptions: [
       { label: '男', value: 0 },
       { label: '女', value: 1 },
@@ -38,6 +44,7 @@ const dialogItems = reactive<formItemType[]>([
     type: 'select',
     field: 'state',
     label: '状态',
+    placeholder: '请选择状态',
     selectOptions: [
       { label: '在职', value: 0 },
       { label: '离职', value: 1 },
@@ -48,13 +55,15 @@ const dialogItems = reactive<formItemType[]>([
     type: 'select',
     field: 'roleId',
     label: '角色',
-    selectOptions: rolesOption.value,
+    placeholder: '请选择角色',
+    selectOptions: rolesOptions.value,
   },
   {
     type: 'select',
     field: 'deptId',
     label: '部门',
-    selectOptions: deptsOption.value,
+    placeholder: '请选择部门',
+    selectOptions: deptOptions.value,
   },
 ])
 
@@ -67,4 +76,4 @@ const rules: FormRulesMap = {
   cellPhone: [{ max: 20, message: '长度不能超过20个字符~' }],
 }
 
-export { dialogItems, rules }
+export { userDialogItems, rules }

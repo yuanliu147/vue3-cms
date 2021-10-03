@@ -10,11 +10,7 @@
     <el-row :gutter="10">
       <template v-for="item of formItems" :key="item.field">
         <el-col v-bind="layout">
-          <el-form-item
-            :label="item.label"
-            :style="{ width: '100%' }"
-            :prop="item.field"
-          >
+          <el-form-item :label="item.label" :style="{ width: '100%' }" :prop="item.field">
             <template v-if="item.type === 'select'">
               <el-select
                 v-model="modelData[item.field]"
@@ -46,15 +42,7 @@
 
 <script setup lang="ts">
 import { IObject } from '@/type'
-import {
-  ElForm,
-  ElRow,
-  ElCol,
-  ElFormItem,
-  ElSelect,
-  ElOption,
-  ElInput,
-} from 'element-plus'
+import { ElForm, ElRow, ElCol, ElFormItem, ElSelect, ElOption, ElInput } from 'element-plus'
 import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 import { reactive, defineProps, defineEmits, watch, ref } from 'vue'
 import { formItemType, ILayout } from '../types'

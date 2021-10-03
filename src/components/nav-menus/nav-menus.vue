@@ -18,11 +18,7 @@
             <i :class="menu.icon" />
             <span>{{ menu.name }}</span>
           </template>
-          <el-menu-item
-            v-for="item of menu.children"
-            :key="item._id"
-            :index="item.path"
-          >
+          <el-menu-item v-for="item of menu.children" :key="item._id" :index="item.path">
             {{ item.name }}
           </el-menu-item>
         </el-sub-menu>

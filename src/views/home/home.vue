@@ -29,7 +29,7 @@ import { ElContainer, ElAside, ElHeader, ElMain } from 'element-plus'
   height: 100vh;
   .menus {
     background-color: #052646;
-    width: 160px;
+    width: 200px;
   }
   .header {
     border-bottom: 1px solid #666;
