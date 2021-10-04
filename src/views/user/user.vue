@@ -1,25 +1,59 @@
 <template>
   <div>
-    <PageSearch :search-data="searchData" :search-items="searchItems" :other-config="otherConfig" />
-    <PageContent :table-column="tableColumns" page="user" />
+    <PageSearch
+      :search-items="searchItems"
+      :other-config="{ labelWidth: '80px' }"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
+    <PageContent
+      :table-column="tableColumns"
+      page="user"
+      ref="contentRef"
+      @create="handleCreate"
+      @edit="handleEdit"
+    />
+    <PageDialog
+      :dialog-items="userDialogItems"
+      :dialog-data="dialogData"
+      page="user"
+      ref="dialogRef"
+      @submit="handleReset"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import PageSearch from '@/components/page-search/page-search.vue'
 import PageContent from '@/components/page-content/page-content.vue'
-import { searchItems } from './search.config'
-import { tableColumns } from './table.config'
-import { reactive } from 'vue'
-import type { ISearch } from './types'
-import { useStore } from '@/store'
-const store = useStore()
-const searchData = reactive<ISearch>({})
-const otherConfig = {
-  labelWidth: '80px',
-}
+import PageDialog from '@/components/page-dialog/page-dialog.vue'
+import { userDialogItems } from '@/pages-config/user.dialog'
 
-store.dispatch('getUsers')
+import { searchItems } from './search.config'
+import { tableColumns } from './content.config'
+import { ref } from 'vue'
+
+const dialogData = ref({}) // 对于编辑还是创建需要区分
+const dialogRef = ref<InstanceType<typeof PageDialog>>()
+const contentRef = ref<InstanceType<typeof PageContent>>()
+function handleSearch(formData: any) {
+  contentRef.value?.getInfo(formData)
+}
+function handleReset() {
+  contentRef.value?.getInfo()
+}
+function handleCreate(data: any) {
+  dialogData.value = data
+  if (dialogRef.value) {
+    dialogRef.value.dialogVisible = true
+  }
+}
+function handleEdit(data: any) {
+  dialogData.value = data
+  if (dialogRef.value) {
+    dialogRef.value.dialogVisible = true
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>

@@ -9,10 +9,10 @@
       <template #header>
         <h2 class="header">搜索</h2>
       </template>
-      <template #footer="{ resetForm }">
+      <template #footer>
         <div class="footer">
-          <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary">搜索</el-button>
+          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" @click="handleSearch">搜索</el-button>
         </div>
       </template>
     </MyForm>
@@ -24,14 +24,25 @@ import MyForm from '@/base-components/my-form/my-form.vue'
 import { ElButton } from 'element-plus'
 import { formItemType } from '@/base-components/types'
 import { IObject } from '@/type'
-import { ref, defineProps, reactive } from 'vue'
+import { defineProps, defineEmits, ref } from 'vue'
 const props = defineProps<{
-  searchData: IObject
   searchItems: formItemType[]
   otherConfig?: IObject
 }>()
-const formData = ref<IObject>({ ...props.searchData })
-const otherConfig = reactive<IObject>({ ...props.otherConfig, size: 'small' })
+const emit = defineEmits<{
+  (e: 'search', formData: any): void
+  (e: 'reset'): void
+}>()
+const formData = ref({})
+const otherConfig = { ...props.otherConfig, size: 'small' }
+
+function handleSearch() {
+  emit('search', formData.value)
+}
+function handleReset() {
+  formData.value = {}
+  emit('reset')
+}
 </script>
 
 <style lang="scss" scoped>
@@ -43,6 +54,7 @@ const otherConfig = reactive<IObject>({ ...props.otherConfig, size: 'small' })
   }
   .footer {
     text-align: center;
+    white-space: nowrap;
   }
 }
 </style>

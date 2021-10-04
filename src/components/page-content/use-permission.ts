@@ -1,13 +1,13 @@
 import { TPage } from '@/service/common'
 import { useStore } from '@/store'
 import { IMenus } from '@/store/types'
-import { computed } from 'vue'
+import { computed, Ref } from 'vue'
 
-export default function usePermission(page: TPage) {
+export default function usePermission(page: Ref<TPage>) {
   const store = useStore()
-  const canDelete = computed(() => findItem(store.state.menus, `delete:${page}`))
-  const canModify = computed(() => findItem(store.state.menus, `update:${page}`))
-  const canCreate = computed(() => findItem(store.state.menus, `create:${page}`))
+  const canDelete = computed(() => findItem(store.state.menus, `delete:${page.value}`))
+  const canModify = computed(() => findItem(store.state.menus, `update:${page.value}`))
+  const canCreate = computed(() => findItem(store.state.menus, `create:${page.value}`))
   return {
     canDelete,
     canModify,
@@ -17,11 +17,11 @@ export default function usePermission(page: TPage) {
 
 function findItem(menus: Readonly<IMenus[]>, condition: string): boolean {
   for (const item of menus) {
-    if (item.permission === condition) {
+    if (findItem(item.children, condition)) {
       return true
     }
-    if (item.children.length) {
-      return findItem(item.children, condition)
+    if (item.permission === condition) {
+      return true
     }
   }
   return false

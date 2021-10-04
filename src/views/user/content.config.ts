@@ -15,6 +15,25 @@ const mapDept = (id: number) => {
   return target?.name ?? null
 }
 
+const formateTime = (time: number) => {
+  const timeStr = '00' + time
+  return timeStr.slice(-2)
+}
+
+const mapUTCTime = (time: Date) => {
+  const date = new Date(time)
+  const year = date.getFullYear()
+  const mouth = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minutes = date.getMinutes()
+  const seconds = date.getSeconds()
+
+  return `${year}-${mouth}-${day} ${formateTime(hour)}:${formateTime(
+    minutes
+  )}:${formateTime(seconds)}`
+}
+
 const setStyle = (code: number) => {
   if (code === 0) {
     return ''
@@ -47,6 +66,18 @@ export const tableColumns: ITableColumn[] = [
     minWidth: '100',
   },
   { label: '部门', prop: 'deptId', type: 'enum', map: mapDept, minWidth: '80' },
-  { label: '创建时间', prop: 'createTime', type: 'time', minWidth: '160' },
-  { label: '更新时间', prop: 'updateTime', type: 'time', minWidth: '160' },
+  {
+    label: '创建时间',
+    prop: 'createTime',
+    type: 'time',
+    minWidth: '160',
+    map: mapUTCTime,
+  },
+  {
+    label: '更新时间',
+    prop: 'updateTime',
+    type: 'time',
+    minWidth: '160',
+    map: mapUTCTime,
+  },
 ]

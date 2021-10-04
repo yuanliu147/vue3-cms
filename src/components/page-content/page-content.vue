@@ -1,18 +1,26 @@
 <template>
   <div class="page-content">
     <MyTable
-      v-loading="loading"
       :table-data="tableData"
       :table-column="tableColumn"
       :can-delete="canDelete"
       :can-modify="canModify"
       @create="handleCreate"
+      v-model:selection="selectionList"
     >
       <template #header>
-        <el-button size="small" v-if="canDelete" type="danger">批量删除</el-button>
-        <el-button size="small" v-if="canCreate" type="primary" @click="handleCreate"
-          >新增</el-button
-        >
+        <div class="header">
+          <el-button
+            size="small"
+            v-if="canDelete && page === 'user'"
+            type="danger"
+            @click="handleBatchDelete(selectionList)"
+            >批量删除</el-button
+          >
+          <el-button size="small" v-if="canCreate" type="primary" @click="handleCreate"
+            >新增</el-button
+          >
+        </div>
       </template>
       <template v-for="item of tableColumn" :key="item.prop" #[item.prop]="{ row }">
         <template v-if="row[item.prop] == null">
@@ -30,6 +38,9 @@
           <template v-else>
             {{ item.map(row[item.prop]) }}
           </template>
+        </template>
+        <template v-else-if="item.type === 'time'">
+          {{ item.map(row[item.prop]) }}
         </template>
         <template v-else>
           {{ row[item.prop] }}
@@ -56,56 +67,71 @@
       layout="prev, pager, next"
       :total="total"
       @current-change="getInfo"
-    >
-    </el-pagination>
-
-    <PageDialog
-      :dialog-items="userDialogItems"
-      :dialog-data="dialogData"
-      page="user"
-      :other-config="dialogOtherConfig"
-      :load-data="getInfo"
-      :id="_id"
-      ref="dialogRef"
     />
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
+import { computed, defineComponent, PropType, ref } from 'vue'
 import MyTable from '@/base-components/my-table/my-table.vue'
 import { ElTag, ElPagination, ElButton } from 'element-plus'
 import type { ITableColumn } from '@/base-components/types'
-import { defineProps, ref } from 'vue'
+import type { TPage } from '@/service/common'
 import useInit from './use-init'
 import usePermission from './use-permission'
 import useHandle from './use-handle'
-import PageDialog from '../page-dialog/page-dialog.vue'
-import { userDialogItems } from '@/pages-config/user.dialog'
-const props = defineProps<{
-  tableColumn: ITableColumn[]
-  page: 'user' | 'role' | 'dept' // 此处未考虑menu
-}>()
-const dialogOtherConfig = {
-  labelWidth: '70px',
-  hideRequiredAsterisk: true,
-}
-const dialogRef = ref<any>()
-
-function setShow() {
-  if (dialogRef.value) {
-    dialogRef.value.dialogVisible = true
-  }
-}
-
-const { loading, tableData, total, pagination, getInfo } = useInit(props)
-getInfo()
-const { canDelete, canCreate, canModify } = usePermission(props.page)
-const { handleEdit, handleDelete, handleCreate, dialogData, _id } = useHandle(
-  props.page,
-  getInfo,
-  tableData,
-  setShow
-)
+import storage from '@/utils/storage'
+export default defineComponent({
+  name: 'PageContent',
+  props: {
+    tableColumn: {
+      type: Array as PropType<ITableColumn[]>,
+      required: true,
+    },
+    page: {
+      type: String as PropType<TPage>,
+      required: true,
+    },
+  },
+  components: {
+    MyTable,
+    ElTag,
+    ElPagination,
+    ElButton,
+  },
+  emits: ['edit', 'create'],
+  setup(props, { emit }) {
+    const selectionList = ref<any[]>([])
+    const page = computed(() => props.page)
+    const { tableData, total } = useInit(page.value)
+    const { canDelete, canCreate, canModify } = usePermission(page)
+    const {
+      handleEdit,
+      handleDelete,
+      handleCreate,
+      handleBatchDelete,
+      getInfo,
+      pagination,
+    } = useHandle(page.value, tableData, emit)
+    getInfo(pagination)
+    return {
+      selectionList,
+      tableData,
+      total,
+      pagination,
+      getInfo,
+      // permission
+      canDelete,
+      canCreate,
+      canModify,
+      // handleEvent
+      handleEdit,
+      handleDelete,
+      handleCreate,
+      handleBatchDelete,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>
@@ -113,6 +139,9 @@ const { handleEdit, handleDelete, handleCreate, dialogData, _id } = useHandle(
   padding: 10px 20px;
   margin-top: 20px;
   background-color: white;
+  .header {
+    white-space: nowrap;
+  }
   .empty {
     padding: 5px 0;
     font-size: 10px;

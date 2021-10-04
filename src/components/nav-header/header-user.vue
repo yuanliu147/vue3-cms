@@ -17,11 +17,9 @@
       :dialog-items="userDialogItems"
       :rules="rules"
       page="user"
-      :id="userInfo._id"
-      :load-data="getUserInfo"
-      :otherConfig="otherConfig"
       v-if="userInfo._id"
       ref="dialogRef"
+      @submit="getUserInfo"
     >
       <el-upload
         :action="uploadUrl"
@@ -40,27 +38,27 @@
 
 <script lang="ts" setup>
 import router from '@/router'
-import { ElDropdown, ElAvatar, ElDropdownMenu, ElDropdownItem, ElUpload } from 'element-plus'
+import {
+  ElDropdown,
+  ElAvatar,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElUpload,
+} from 'element-plus'
 import { BASE_URL } from '@/service/base/config'
 import { useStore } from '@/store'
 import storage from '@/utils/storage'
 import { ElMessage } from 'element-plus'
-import { computed, Ref, ref } from 'vue'
+import { computed, ref } from 'vue'
 import PageDialog from '../page-dialog/page-dialog.vue'
 import { userDialogItems, rules } from '@/pages-config/user.dialog'
 const store = useStore()
-const dialogRef: Ref<any> | undefined = ref<any>()
+const dialogRef = ref<InstanceType<typeof PageDialog>>()
 
 const userInfo = computed(() => store.state.loginModule.userInfo)
 const token = computed(() => store.state.loginModule.token)
 const headers = computed(() => ({ Authorization: `Bearer ${token.value}` } as any))
 const uploadUrl = computed(() => `${BASE_URL}/upload/avatar`)
-
-const otherConfig = {
-  labelWidth: '70px',
-  size: 'mini',
-  hideRequiredAsterisk: true,
-}
 
 const handleLogout = () => {
   store.commit('loginModule/setUserInfo', {})
@@ -68,6 +66,7 @@ const handleLogout = () => {
   router.replace('/login')
 }
 const handleSelf = () => {
+  getUserInfo()
   if (dialogRef.value) {
     dialogRef.value.dialogVisible = true
   }

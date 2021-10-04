@@ -12,9 +12,9 @@ export const searchItems: formItemType[] = [
   },
   {
     type: 'select',
-    field: 'sex',
-    label: '性别',
-    placeholder: '请输入用户性别',
+    field: 'deptId',
+    label: '部门',
+    placeholder: '请选择部门',
     selectOptions: [
       { label: '男', value: 0 },
       { label: '女', value: 1 },

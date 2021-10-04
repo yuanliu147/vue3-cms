@@ -1,4 +1,4 @@
-import { Ref } from 'vue-demi';
+import { Ref } from 'vue-demi'
 
 type Type = 'text' | 'password' | 'select'
 export interface formItemType {

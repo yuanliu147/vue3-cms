@@ -4,7 +4,8 @@ import store from '@/store'
 import { loadRoutes } from '@/utils/utils'
 const Login = () => import(/* webpackChunkName: "login" */ '../views/login/login.vue')
 const Home = () => import(/* webpackChunkName: "home" */ '../views/home/home.vue')
-const Welcome = () => import(/* webpackChunkName: "welcome" */ '../views/welcome/welcome.vue')
+const Welcome = () =>
+  import(/* webpackChunkName: "welcome" */ '../views/welcome/welcome.vue')
 
 const routes: Array<RouteRecordRaw> = [
   {

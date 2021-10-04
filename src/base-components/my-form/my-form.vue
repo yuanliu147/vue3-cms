@@ -42,9 +42,17 @@
 
 <script setup lang="ts">
 import { IObject } from '@/type'
-import { ElForm, ElRow, ElCol, ElFormItem, ElSelect, ElOption, ElInput } from 'element-plus'
+import {
+  ElForm,
+  ElRow,
+  ElCol,
+  ElFormItem,
+  ElSelect,
+  ElOption,
+  ElInput,
+} from 'element-plus'
 import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
-import { reactive, defineProps, defineEmits, watch, ref } from 'vue'
+import { defineProps, defineEmits, watch, ref } from 'vue'
 import { formItemType, ILayout } from '../types'
 // 定义props和emits
 const props = defineProps<{
@@ -59,10 +67,21 @@ const emit = defineEmits<{
 }>()
 // 其他内容
 const formRef = ref<InstanceType<typeof ElForm>>()
-const modelData = reactive<IObject>({ ...props.formData })
-watch(modelData, (newData: IObject) => {
-  emit('update:formData', newData)
-})
+const modelData = ref<IObject>({ ...props.formData })
+watch(
+  () => props.formData,
+  (newData) => {
+    modelData.value = newData
+  }
+)
+
+watch(
+  modelData,
+  (newData: IObject) => {
+    emit('update:formData', newData)
+  },
+  { deep: true }
+)
 
 function resetForm() {
   formRef.value?.resetFields()

@@ -34,10 +34,12 @@ import { ElContainer, ElAside, ElHeader, ElMain } from 'element-plus'
   .header {
     border-bottom: 1px solid #666;
     height: 60px;
+    min-width: 400px;
   }
   .content {
     height: 100%;
     background-color: #eee;
+    min-width: 400px;
   }
 }
 </style>

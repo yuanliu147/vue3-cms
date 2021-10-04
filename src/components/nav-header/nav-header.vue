@@ -47,7 +47,6 @@ watch(
 <style lang="scss" scoped>
 .nav-header {
   height: 100%;
-  min-width: 400px;
   display: flex;
   justify-content: space-between;
   align-items: center;

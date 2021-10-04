@@ -10,7 +10,11 @@
         <h2 class="title">vue3-cms</h2>
       </template>
       <template #footer="{ formRef }">
-        <el-button class="submit" type="primary" @click="handleLogin(formRef)" :loading="loading"
+        <el-button
+          class="submit"
+          type="primary"
+          @click="handleLogin(formRef)"
+          :loading="loading"
           >登录</el-button
         >
       </template>

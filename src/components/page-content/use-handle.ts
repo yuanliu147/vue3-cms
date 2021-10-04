@@ -1,26 +1,37 @@
 import { deletePageItemById, TPage } from '@/service/common'
 import { IResData } from '@/type'
 import { ElMessage } from 'element-plus'
-import { Ref, ref } from 'vue'
+import { reactive, Ref } from 'vue'
+import { firstToUpper } from '@/utils/utils'
+import store from '@/store'
+
+interface IPaging {
+  pageSize: number
+  pageNum: number
+}
 
 export default function useHandle(
   page: TPage,
-  getInfo: () => any,
   tableData: Ref<any>,
-  setShow: () => void
+  emit: (event: 'edit' | 'create', ...args: any[]) => void
 ) {
-  const dialogData: Ref<any> = ref<any>({})
-  const _id = ref<number>()
-  const handleEdit = function (id: number) {
-    _id.value = id
-    dialogData.value = tableData.value.find((item: any) => item._id === id)
-    setShow()
-    console.log('edit', id)
+  const pagination: IPaging = reactive({
+    pageSize: 10,
+    pageNum: 1,
+  })
+
+  function getInfo(query?: any) {
+    return store.dispatch(`get${firstToUpper(page)}s`, { ...pagination, ...query })
+  }
+
+  const handleEdit = function (_id: number) {
+    const editData = tableData.value.find((item: any) => item._id === _id)
+    emit('edit', editData)
   }
 
   const handleDelete = async function (_id: number) {
     const res = await deletePageItemById<IResData>(page, _id)
-    const success = res.code
+    const success = res.code === 200
     if (!success) {
       ElMessage.error(`删除失败: ${res.msg}`)
       return
@@ -30,17 +41,28 @@ export default function useHandle(
   }
 
   const handleCreate = function () {
-    _id.value = undefined
-    dialogData.value = {}
-    setShow()
-    console.log('create')
+    emit('create', {})
+  }
+
+  const handleBatchDelete = async function (list: any[]) {
+    for (const item of list) {
+      const res = await deletePageItemById<IResData>(page, item._id)
+      const success = res.code === 200
+      if (!success) {
+        ElMessage.error(`${item.name} 删除失败: ${res.msg}`)
+        return
+      }
+    }
+    await getInfo()
+    ElMessage.success('删除成功~')
   }
 
   return {
     handleEdit,
     handleDelete,
     handleCreate,
-    dialogData,
-    _id,
+    handleBatchDelete,
+    getInfo,
+    pagination,
   }
 }

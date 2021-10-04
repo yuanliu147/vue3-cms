@@ -1,7 +1,14 @@
 import { createStore, Store, useStore as useOriginStore } from 'vuex'
 import storage from '@/utils/storage'
-import type { IDeptResData, IMenus, IRoleResData, IRootState, IStore, IUserResData } from './types'
-import { getPageList, IPaging } from '@/service/common'
+import type {
+  IDeptResData,
+  IMenus,
+  IRoleResData,
+  IRootState,
+  IStore,
+  IUserResData,
+} from './types'
+import { getPageList } from '@/service/common'
 import loginModule from './modules/login'
 import { IResData } from '@/type'
 import { ElMessage } from 'element-plus'
@@ -30,7 +37,7 @@ export default createStore<IRootState>({
     },
   },
   actions: {
-    async getUsers({ commit }, params: IPaging) {
+    async getUsers({ commit }, params: any) {
       const usersRes = await getPageList<IResData<IUserResData>>('user', params)
       const success = usersRes.code === 200
       if (!success) {
@@ -54,7 +61,7 @@ export default createStore<IRootState>({
       storage.setItem('menus', menus)
       menus && loadRoutes(router, menus)
     },
-    async getRoles({ commit }, params: IPaging) {
+    async getRoles({ commit }, params: any) {
       const rolesRes = await getPageList<IResData<IRoleResData>>('role', params)
       const success = rolesRes.code === 200
       if (!success) {
@@ -65,7 +72,7 @@ export default createStore<IRootState>({
       commit('setRoles', roles)
       storage.setItem('roles', roles)
     },
-    async getDepts({ commit }, params: IPaging) {
+    async getDepts({ commit }, params: any) {
       const deptsRes = await getPageList<IResData<IDeptResData>>('dept', params)
       const success = deptsRes.code === 200
       if (!success) {
