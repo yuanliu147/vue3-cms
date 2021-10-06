@@ -1,6 +1,6 @@
 <template>
   <el-dialog v-model="dialogVisible" width="30%" center destroy-on-close>
-    <slot> </slot>
+    <slot name="header"> </slot>
     <MyForm
       v-model:form-data="formData"
       :form-items="dialogItems"
@@ -9,6 +9,10 @@
       :layout="{ xs: 24, sm: 24, md: 24, lg: 24, xl: 24 }"
     >
     </MyForm>
+    <div class="permission">
+      <slot name="permission"></slot>
+    </div>
+
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -66,7 +70,9 @@ export default defineComponent({
     watch(
       () => props.dialogData,
       (newData) => {
-        formData.value = { ...newData }
+        for (const item of props.dialogItems) {
+          formData.value[item.field] = newData[item.field]
+        }
         if (newData._id) {
           // #可以根据其传过来的初始值来判断是编辑还是创建
           editId.value = newData._id
@@ -75,7 +81,8 @@ export default defineComponent({
           action.value = 'create'
           editId.value = -1
         }
-      }
+      },
+      { deep: true }
     )
     watch(
       formData,
@@ -116,4 +123,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.permission {
+  padding-left: 25%;
+}
+</style>

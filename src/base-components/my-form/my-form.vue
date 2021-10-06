@@ -25,6 +25,14 @@
                 />
               </el-select>
             </template>
+            <template v-else-if="item.type === 'auto'">
+              <el-autocomplete
+                class="inline-input"
+                :model-value="modelData[item.field]"
+                :fetch-suggestions="item?.querySearch"
+                :placeholder="item.placeholder"
+              ></el-autocomplete>
+            </template>
             <template v-else>
               <el-input
                 :type="item.type"
@@ -50,6 +58,7 @@ import {
   ElSelect,
   ElOption,
   ElInput,
+  ElAutocomplete,
 } from 'element-plus'
 import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 import { defineProps, defineEmits, watch, ref } from 'vue'

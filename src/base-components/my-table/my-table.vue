@@ -7,9 +7,15 @@
       :data="props.tableData"
       style="width: 100%"
       border
+      row-key="_id"
       @selection-change="handleSelection"
     >
-      <el-table-column v-if="canDelete" align="center" type="selection" min-width="40" />
+      <el-table-column
+        v-if="showSelection"
+        align="center"
+        type="selection"
+        min-width="40"
+      />
       <el-table-column
         v-for="item of props.tableColumn"
         :key="item.prop"
@@ -49,6 +55,7 @@ const props = defineProps<{
   canDelete: boolean
   canModify: boolean
   selection: any[]
+  showSelection: boolean
 }>()
 const emit = defineEmits<{
   (e: 'update:selection', newSelection: any[]): void

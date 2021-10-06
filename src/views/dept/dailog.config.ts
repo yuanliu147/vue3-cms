@@ -4,7 +4,7 @@ import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 import { computed, reactive } from 'vue'
 
 const leaderOptions = computed(() => {
-  return store.state.users.list.map((user) => {
+  return store.state.users.list?.map((user) => {
     return {
       label: user.name,
       value: user.name,
@@ -12,7 +12,7 @@ const leaderOptions = computed(() => {
   })
 })
 
-const userDialogItems = reactive<formItemType[]>([
+const deptDialogItems = reactive<formItemType[]>([
   // 数据不能写死
   { type: 'text', field: 'name', label: '名称', placeholder: '请输入部门名称' },
   {
@@ -31,4 +31,4 @@ const rules: FormRulesMap = {
   leader: [{ required: true, trigger: 'blur', message: '负责人不能为空' }],
 }
 
-export { userDialogItems, rules }
+export { deptDialogItems, rules }

@@ -7,6 +7,8 @@ const Dept = () => import('@/views/dept/dept.vue' /* webpackChunkName: 'Departme
 const Leave = () => import('@/views/leave/leave.vue' /* webpackChunkName: 'Leave' */)
 const Pending = () =>
   import('@/views/pending/pending.vue' /* webpackChunkName: 'Pending' */)
+const Overview = () =>
+  import('@/views/overview/overview.vue' /* webpackChunkName: 'Overview' */)
 
 export const allRoutes: RouteRecordRaw[] = [
   {
@@ -38,5 +40,10 @@ export const allRoutes: RouteRecordRaw[] = [
     path: '/approval/pending',
     name: '待我审批',
     component: Pending,
+  },
+  {
+    path: '/overview',
+    name: '系统总览',
+    component: Overview,
   },
 ]

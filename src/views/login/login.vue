@@ -29,6 +29,7 @@ import { ref } from 'vue'
 import { formItems, userAccount, rules } from './login.config'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
+import { loadRoutes } from '@/utils/utils'
 const router = useRouter()
 const store = useStore()
 const loading = ref(false)
@@ -41,6 +42,7 @@ const handleLogin = (formRef: InstanceType<typeof ElForm> | undefined) => {
       loading.value = true
       const success = await store.dispatch('loginModule/login', userAccount.value)
       loading.value = false
+      loadRoutes(router, store.state.menus)
       success && router.replace('/')
     }
   })

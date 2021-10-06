@@ -4,7 +4,7 @@ import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 import { computed, reactive } from 'vue'
 
 const rolesOptions = computed(() => {
-  return store.state.roles.list.map((role) => {
+  return store.state.roles.list?.map((role) => {
     return {
       label: role.name,
       value: role._id,
@@ -12,7 +12,7 @@ const rolesOptions = computed(() => {
   })
 })
 const deptOptions = computed(() => {
-  return store.state.depts.list.map((dept) => {
+  return store.state.depts.list?.map((dept) => {
     return {
       label: dept.name,
       value: dept._id,

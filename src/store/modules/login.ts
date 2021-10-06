@@ -5,7 +5,7 @@ import { login } from '@/service/login'
 import { IResData } from '@/type'
 import { getInfoById } from '@/service/user'
 import { ElMessage } from 'element-plus'
-import { showMessageByRes } from '@/utils/utils'
+import { loadRoutes, showMessageByRes } from '@/utils/utils'
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {
@@ -36,10 +36,6 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 获取菜单列表
       await dispatch('getMenus', null, { root: true })
-      // 获取角色列表
-      await dispatch('getRoles', null, { root: true })
-      // 获取部门列表
-      await dispatch('getDepts', null, { root: true })
 
       return loginRes.code === 200
     },

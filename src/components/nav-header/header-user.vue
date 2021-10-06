@@ -21,17 +21,19 @@
       ref="dialogRef"
       @submit="getUserInfo"
     >
-      <el-upload
-        :action="uploadUrl"
-        name="avatar"
-        :show-file-list="false"
-        :on-success="uploadSuccess"
-        class="upload"
-        accept="image/*"
-        :headers="headers"
-      >
-        <el-avatar class="avatar-img" :size="80" :src="userInfo.avatar" />
-      </el-upload>
+      <template #header>
+        <el-upload
+          :action="uploadUrl"
+          name="avatar"
+          :show-file-list="false"
+          :on-success="uploadSuccess"
+          class="upload"
+          accept="image/*"
+          :headers="headers"
+        >
+          <el-avatar class="avatar-img" :size="80" :src="userInfo.avatar" />
+        </el-upload>
+      </template>
     </PageDialog>
   </div>
 </template>

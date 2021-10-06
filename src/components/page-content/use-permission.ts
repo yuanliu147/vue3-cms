@@ -1,6 +1,7 @@
 import { TPage } from '@/service/common'
 import { useStore } from '@/store'
-import { IMenus } from '@/store/types'
+
+import { findItem } from '@/utils/utils'
 import { computed, Ref } from 'vue'
 
 export default function usePermission(page: Ref<TPage>) {
@@ -13,16 +14,4 @@ export default function usePermission(page: Ref<TPage>) {
     canModify,
     canCreate,
   }
-}
-
-function findItem(menus: Readonly<IMenus[]>, condition: string): boolean {
-  for (const item of menus) {
-    if (findItem(item.children, condition)) {
-      return true
-    }
-    if (item.permission === condition) {
-      return true
-    }
-  }
-  return false
 }

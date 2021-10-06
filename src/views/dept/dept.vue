@@ -14,7 +14,7 @@
       @edit="handleEdit"
     />
     <PageDialog
-      :dialog-items="userDialogItems"
+      :dialog-items="deptDialogItems"
       :dialog-data="dialogData"
       :rules="rules"
       page="dept"
@@ -31,7 +31,7 @@ import PageContent from '@/components/page-content/page-content.vue'
 import PageDialog from '@/components/page-dialog/page-dialog.vue'
 import { searchItems } from './search.config'
 import { tableColumns } from './content.config'
-import { userDialogItems, rules } from './dailog.config'
+import { deptDialogItems, rules } from './dailog.config'
 
 const dialogData = ref({})
 const dialogRef = ref<InstanceType<typeof PageDialog>>()

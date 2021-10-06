@@ -34,14 +34,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  if (to.fullPath !== '/login') {
+  if (to.path !== '/login') {
     const userInfo = storage.getItem('userInfo')
     if (!userInfo) {
       return '/login'
     }
   }
 })
-if (router.currentRoute.value.fullPath !== '/login') {
+if (storage.getItem('token') && router.currentRoute.value.path !== '/login') {
   loadRoutes(router, store.state.menus)
 }
 

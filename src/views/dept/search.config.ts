@@ -3,7 +3,7 @@ import store from '@/store'
 import { computed } from 'vue'
 
 const users = computed(() => {
-  return store.state.users.list.map((user) => {
+  return store.state.users.list?.map((user) => {
     return {
       label: user.name,
       value: user.name,

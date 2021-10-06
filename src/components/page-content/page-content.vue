@@ -5,6 +5,7 @@
       :table-column="tableColumn"
       :can-delete="canDelete"
       :can-modify="canModify"
+      :showSelection="showSelection"
       @create="handleCreate"
       v-model:selection="selectionList"
     >
@@ -42,6 +43,12 @@
         <template v-else-if="item.type === 'time'">
           {{ item.map(row[item.prop]) }}
         </template>
+        <template v-else-if="item.type === 'icon'">
+          <i class="icon" :class="row[item.prop]" />
+        </template>
+        <template v-else-if="item.type === 'tree'">
+          <el-tree :data="row[item.prop]" :props="item.treeProp" />
+        </template>
         <template v-else>
           {{ row[item.prop] }}
         </template>
@@ -61,26 +68,25 @@
     </MyTable>
     <el-pagination
       class="pagination"
-      v-model:page-size="pagination.pageSize"
-      v-model:current-page="pagination.pageNum"
+      v-model:pageSize="pagination.pageSize"
+      v-model:currentPage="pagination.pageNum"
+      v-if="page !== 'menu'"
       background
       layout="prev, pager, next"
-      :total="total"
-      @current-change="getInfo"
+      :page-count="pageCount"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import MyTable from '@/base-components/my-table/my-table.vue'
-import { ElTag, ElPagination, ElButton } from 'element-plus'
+import { ElTag, ElPagination, ElButton, ElTree } from 'element-plus'
 import type { ITableColumn } from '@/base-components/types'
 import type { TPage } from '@/service/common'
 import useInit from './use-init'
 import usePermission from './use-permission'
 import useHandle from './use-handle'
-import storage from '@/utils/storage'
 export default defineComponent({
   name: 'PageContent',
   props: {
@@ -98,13 +104,15 @@ export default defineComponent({
     ElTag,
     ElPagination,
     ElButton,
+    ElTree,
   },
   emits: ['edit', 'create'],
   setup(props, { emit }) {
     const selectionList = ref<any[]>([])
     const page = computed(() => props.page)
-    const { tableData, total } = useInit(page.value)
+    const { tableData, pageCount } = useInit(page.value)
     const { canDelete, canCreate, canModify } = usePermission(page)
+    const showSelection = computed(() => page.value !== 'menu' && canDelete.value)
     const {
       handleEdit,
       handleDelete,
@@ -113,13 +121,21 @@ export default defineComponent({
       getInfo,
       pagination,
     } = useHandle(page.value, tableData, emit)
-    getInfo(pagination)
+
+    watch(
+      pagination,
+      (newPagination) => {
+        getInfo(newPagination)
+      },
+      { immediate: true }
+    )
     return {
       selectionList,
       tableData,
-      total,
+      pageCount,
       pagination,
       getInfo,
+      showSelection,
       // permission
       canDelete,
       canCreate,
@@ -149,6 +165,10 @@ export default defineComponent({
   .pagination {
     text-align: right;
     margin: 10px;
+  }
+  .icon {
+    font-size: 25px;
+    color: rgb(3, 59, 243);
   }
   .operator {
     display: flex;

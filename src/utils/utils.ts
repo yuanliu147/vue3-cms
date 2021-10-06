@@ -14,6 +14,18 @@ export function showMessageByRes(res: IResData): boolean {
   return success
 }
 
+export function findItem(menus: Readonly<IMenus[]>, condition: string): boolean {
+  for (const item of menus) {
+    if (findItem(item.children, condition)) {
+      return true
+    }
+    if (item.permission === condition) {
+      return true
+    }
+  }
+  return false
+}
+
 export function loadRoutes(router: Router, menus: IMenus[]) {
   for (const item of menus) {
     if (item.type === 2) {

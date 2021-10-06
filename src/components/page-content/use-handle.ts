@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import { reactive, Ref } from 'vue'
 import { firstToUpper } from '@/utils/utils'
 import store from '@/store'
+import { IMenus } from '@/store/types'
 
 interface IPaging {
   pageSize: number
@@ -21,11 +22,15 @@ export default function useHandle(
   })
 
   function getInfo(query?: any) {
-    return store.dispatch(`get${firstToUpper(page)}s`, { ...pagination, ...query })
+    store.dispatch(`get${firstToUpper(page)}s`, { ...pagination, ...query })
   }
 
   const handleEdit = function (_id: number) {
-    const editData = tableData.value.find((item: any) => item._id === _id)
+    console.log(_id, page)
+    const editData =
+      page !== 'menu'
+        ? tableData.value.find((item: any) => item._id === _id)
+        : findItem(tableData.value, _id)
     emit('edit', editData)
   }
 
@@ -55,6 +60,19 @@ export default function useHandle(
     }
     await getInfo()
     ElMessage.success('删除成功~')
+  }
+
+  function findItem(menus: IMenus[], id: number): any {
+    for (const item of menus) {
+      const res = findItem(item.children, id)
+      if (res) {
+        return res
+      }
+      if (item._id === id) {
+        return item
+      }
+    }
+    return undefined
   }
 
   return {

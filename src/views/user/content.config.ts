@@ -29,9 +29,9 @@ const mapUTCTime = (time: Date) => {
   const minutes = date.getMinutes()
   const seconds = date.getSeconds()
 
-  return `${year}-${mouth}-${day} ${formateTime(hour)}:${formateTime(
-    minutes
-  )}:${formateTime(seconds)}`
+  return `${year}-${formateTime(mouth)}-${formateTime(day)} ${formateTime(
+    hour
+  )}:${formateTime(minutes)}:${formateTime(seconds)}`
 }
 
 const setStyle = (code: number) => {
