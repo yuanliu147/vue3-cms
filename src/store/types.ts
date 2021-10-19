@@ -1,8 +1,12 @@
+import { IViewData } from '@/components/page-charts/types'
+
 export interface IRootState {
   menus: IMenus[]
   roles: IRoleResData
   depts: IDeptResData
   users: IUserResData
+  deptsview: IViewData[]
+  roleview: IViewData[]
 }
 
 export interface IDept {

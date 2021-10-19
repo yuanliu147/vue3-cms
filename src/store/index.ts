@@ -14,6 +14,7 @@ import { IResData } from '@/type'
 import { ElMessage } from 'element-plus'
 import { loadRoutes } from '@/utils/utils'
 import router from '@/router'
+import { getDeptView, getRolesView } from '@/service/view'
 
 export default createStore<IRootState>({
   state: {
@@ -21,6 +22,8 @@ export default createStore<IRootState>({
     roles: storage.getItem('roles') ?? {},
     depts: storage.getItem('depts') ?? {},
     users: storage.getItem('users') ?? {},
+    deptsview: storage.getItem('deptsview') ?? [],
+    roleview: storage.getItem('roleview') ?? [],
   },
   mutations: {
     setMenus(state, menus) {
@@ -34,6 +37,12 @@ export default createStore<IRootState>({
     },
     setUsers(state, users) {
       state.users = users
+    },
+    setDeptsView(state, views) {
+      state.deptsview = views
+    },
+    setRoleView(state, views) {
+      state.roleview = views
     },
   },
   actions: {
@@ -82,6 +91,30 @@ export default createStore<IRootState>({
       const depts = deptsRes.data
       commit('setDepts', depts)
       storage.setItem('depts', depts)
+    },
+    async getDeptsView({ commit }) {
+      const deptViewRes = await getDeptView()
+      const success = deptViewRes.code === 200
+      if (!success) {
+        ElMessage.error(`视图数据获取失败: ${deptViewRes.msg}`)
+        console.log(deptViewRes)
+        return
+      }
+      const deptsView = deptViewRes.data
+      commit('setDeptsView', deptsView)
+      storage.setItem('deptsView', deptsView)
+    },
+    async getRoleView({ commit }) {
+      const rolesViewRes = await getRolesView()
+      const success = rolesViewRes.code === 200
+      if (!success) {
+        ElMessage.error(`视图数据获取失败: ${rolesViewRes.msg}`)
+        console.log(rolesViewRes)
+        return
+      }
+      const rolesView = rolesViewRes.data
+      commit('setRoleView', rolesView)
+      storage.setItem('rolesView', rolesView)
     },
   },
   modules: {
