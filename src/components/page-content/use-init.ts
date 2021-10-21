@@ -8,6 +8,7 @@ export default function useInit(page: TPage) {
   const store = useStore()
   const tableData = computed(() => {
     if (page !== 'menu') {
+      console.log('发送请求')
       return (store.state[`${page}s` as IStorePage] as any).list ?? []
     }
     return store.state[`${page}s` as IStorePage] ?? []
@@ -22,5 +23,6 @@ export default function useInit(page: TPage) {
   return {
     tableData,
     pageCount,
+    total
   }
 }

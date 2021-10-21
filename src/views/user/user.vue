@@ -33,21 +33,25 @@ import { searchItems } from './search.config'
 import { tableColumns } from './content.config'
 import { ref } from 'vue'
 
-const dialogData = ref({}) // 对于编辑还是创建需要区分
+const dialogData = ref({})
 const dialogRef = ref<InstanceType<typeof PageDialog>>()
 const contentRef = ref<InstanceType<typeof PageContent>>()
+
 function handleSearch(formData: any) {
   contentRef.value?.getInfo(formData)
 }
+
 function handleReset() {
   contentRef.value?.getInfo()
 }
+
 function handleCreate(data: any) {
   dialogData.value = data
   if (dialogRef.value) {
     dialogRef.value.dialogVisible = true
   }
 }
+
 function handleEdit(data: any) {
   dialogData.value = data
   if (dialogRef.value) {

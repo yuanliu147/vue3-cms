@@ -5,8 +5,8 @@ import { FormRulesMap } from 'element-plus/lib/components/form/src/form.type'
 import { computed, reactive } from 'vue'
 
 const querySearch = (queryString: string, cb: (arg: any[]) => any) => {
-  const list = ['create:', 'update:', 'delete:']
-  const results = list.map((item) => item + queryString)
+  const list = [{ value: 'create:'}, { value: 'update:'}, {value: 'delete:'}] // 联想输入得是对象含value
+  const results = list.map((item) => ({ value: item.value += queryString}))
   cb(results)
 }
 

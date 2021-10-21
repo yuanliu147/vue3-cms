@@ -10,7 +10,7 @@ const mapRole = (id: number) => {
   return target?.name ?? null
 }
 const mapDept = (id: number) => {
-  const depts = store.state?.depts?.list ?? []
+  const depts = store.state.depts?.list ?? []
   const target = depts.find((item) => item._id === id)
   return target?.name ?? null
 }

@@ -27,8 +27,10 @@
             </template>
             <template v-else-if="item.type === 'auto'">
               <el-autocomplete
-                class="inline-input"
-                :model-value="modelData[item.field]"
+                popper-class="my-autocomplete"
+                style="width: 100%"
+                v-model="modelData[item.field]"
+                :trigger-on-focus="false"
                 :fetch-suggestions="item?.querySearch"
                 :placeholder="item.placeholder"
               ></el-autocomplete>
@@ -77,6 +79,7 @@ const emit = defineEmits<{
 // 其他内容
 const formRef = ref<InstanceType<typeof ElForm>>()
 const modelData = ref<IObject>({ ...props.formData })
+console.log(modelData.value)
 watch(
   () => props.formData,
   (newData) => {
@@ -101,5 +104,20 @@ function resetForm() {
 .footer {
   width: 100%;
   text-align: center;
+}
+.my-autocomplete li {
+  line-height: normal;
+  padding: 7px;
+}
+.my-autocomplete li .name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.my-autocomplete li .addr {
+  font-size: 12px;
+  color: #b4b4b4;
+}
+.my-autocomplete li .highlighted .addr {
+  color: #ddd;
 }
 </style>

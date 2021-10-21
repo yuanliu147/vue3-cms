@@ -1,6 +1,15 @@
 import { formItemType } from '@/base-components/types'
+import store from '@/store'
+import { computed, Ref } from 'vue'
 
-export const searchItems: formItemType[] = [
+const depts = computed(() => {
+  return store.state.depts.list?.map((item) => ({
+    label: item.name,
+    value: item._id,
+  }))
+})
+
+export const searchItems: Ref<formItemType[]> = computed(() => [
   { field: '_id', label: 'id', placeholder: '请输入用户id', type: 'text' },
   { field: 'name', label: '用户名', placeholder: '请输入用户名', type: 'text' },
   { field: 'email', label: '邮箱', placeholder: '请输入邮箱', type: 'text' },
@@ -15,10 +24,7 @@ export const searchItems: formItemType[] = [
     field: 'deptId',
     label: '部门',
     placeholder: '请选择部门',
-    selectOptions: [
-      { label: '男', value: 0 },
-      { label: '女', value: 1 },
-    ],
+    selectOptions: depts.value,
   },
   {
     field: 'state',
@@ -31,4 +37,4 @@ export const searchItems: formItemType[] = [
       { label: '试用期', value: 2 },
     ],
   },
-]
+])

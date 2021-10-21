@@ -72,8 +72,9 @@
       v-model:currentPage="pagination.pageNum"
       v-if="page !== 'menu'"
       background
-      layout="prev, pager, next"
+      layout="prev, pager, next, total"
       :page-count="pageCount"
+      :total="total"
     />
   </div>
 </template>
@@ -110,7 +111,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const selectionList = ref<any[]>([])
     const page = computed(() => props.page)
-    const { tableData, pageCount } = useInit(page.value)
+    const { tableData, pageCount, total } = useInit(page.value)
     const { canDelete, canCreate, canModify } = usePermission(page)
     const showSelection = computed(() => page.value !== 'menu' && canDelete.value)
     const {
@@ -133,6 +134,7 @@ export default defineComponent({
       selectionList,
       tableData,
       pageCount,
+      total,
       pagination,
       getInfo,
       showSelection,

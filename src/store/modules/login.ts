@@ -34,9 +34,9 @@ const loginModule: Module<ILoginState, IRootState> = {
         storage.setItem('token', token)
       }
 
-      // 获取菜单列表
       await dispatch('getMenus', null, { root: true })
-
+      await dispatch('getRoles', null, { root: true })
+      await dispatch('getDepts', null, { root: true })
       return loginRes.code === 200
     },
 
